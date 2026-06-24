@@ -1,3 +1,6 @@
+-- GitHub へのリンク
+-- https://github.com/NAVYSHUNTA/atcoder-haskell
+
 module Main where
 
 import Data.Bool
