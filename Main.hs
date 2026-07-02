@@ -3,7 +3,7 @@
 
 module Main where
 
-import Control.Monad (replicateM)
+import Control.Monad
 import Data.Bool
 
 main :: IO ()
