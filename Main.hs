@@ -68,3 +68,7 @@ yn = bool "No" "Yes"
 -- | \( O(1) \) : ブール値を @\"Yes\"@ / @\"No\"@ の形式で出力する
 printYesNo :: Bool -> IO ()
 printYesNo = putStrLn . yn
+
+-- | \( O(n) \) : 条件を満たす要素の個数を数える
+count :: (Foldable t) => (a -> Bool) -> t a -> Int
+count p = foldr (\x cnt -> if p x then cnt + 1 else cnt) 0
