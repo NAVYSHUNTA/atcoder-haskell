@@ -15,9 +15,13 @@ main = do
     s <- inputString
     putStrLn $ show (a + b + c) <> " " <> s
 
+-- | 文字列を整数に変換する
+readInt :: BS.ByteString -> Int
+readInt = fst . fromJust . BS.readInt
+
 -- | 1 行の整数を受け取る
 inputInt :: IO Int
-inputInt = fst . fromJust . BS.readInt <$> BS.getLine
+inputInt = readInt <$> inputByteString
 
 -- | 1 行の文字列を受け取る
 inputString :: IO String
@@ -29,15 +33,15 @@ inputByteString = BS.getLine
 
 -- | 1 行の空白区切りで与えられる整数を受け取る
 inputSplitInt :: IO [Int]
-inputSplitInt = map (fst . fromJust . BS.readInt) . BS.words <$> BS.getLine
+inputSplitInt = map readInt <$> inputSplitByteString
 
 -- | 1 行の空白区切りで与えられる文字列を受け取る
 inputSplitString :: IO [String]
-inputSplitString = words <$> getLine
+inputSplitString = words <$> inputString
 
 -- | 1 行の空白区切りで与えられる文字列を受け取る
 inputSplitByteString :: IO [BS.ByteString]
-inputSplitByteString = BS.words <$> BS.getLine
+inputSplitByteString = BS.words <$> inputByteString
 
 -- | 複数行の整数を受け取る
 inputInts :: Int -> IO [Int]
@@ -63,29 +67,37 @@ inputSplitStrings lineCount = replicateM lineCount inputSplitString
 inputSplitByteStrings :: Int -> IO [[BS.ByteString]]
 inputSplitByteStrings lineCount = replicateM lineCount inputSplitByteString
 
+-- | 空白区切りで出力するための汎用的な関数
+outputSplit :: (a -> String) -> [a] -> IO ()
+outputSplit f = putStrLn . unwords . map f
+
+-- | 改行区切りで出力するための汎用的な関数
+outputLine :: (a -> String) -> [a] -> IO ()
+outputLine f = putStr . unlines . map f
+
 -- | 整数を空白区切りで出力する
 outputSplitInt :: [Int] -> IO ()
-outputSplitInt output = putStrLn $ unwords . map show $ output
+outputSplitInt = outputSplit show
 
 -- | 文字列を空白区切りで出力する
 outputSplitString :: [String] -> IO ()
-outputSplitString output = putStrLn $ unwords output
+outputSplitString = outputSplit id
 
 -- | 文字列を空白区切りで出力する
 outputSplitByteString :: [BS.ByteString] -> IO ()
-outputSplitByteString output = BS.putStrLn $ BS.unwords output
+outputSplitByteString = BS.putStrLn . BS.unwords
 
 -- | 整数を改行区切りで出力する
 outputLineInt :: [Int] -> IO ()
-outputLineInt output = putStr $ unlines . map show $ output
+outputLineInt = outputLine show
 
 -- | 文字列を改行区切りで出力する
 outputLineString :: [String] -> IO ()
-outputLineString output = putStr $ unlines output
+outputLineString = outputLine id
 
 -- | 文字列を改行区切りで出力する
 outputLineByteString :: [BS.ByteString] -> IO ()
-outputLineByteString output = BS.putStr $ BS.unlines output
+outputLineByteString = BS.putStr . BS.unlines
 
 -- | \( O(1) \) : ブール値を @\"Yes\"@ / @\"No\"@ の形式に変換する
 yn :: Bool -> String
