@@ -15,7 +15,7 @@ main = do
     s <- inputString
     putStrLn $ show (a + b + c) <> " " <> s
 
--- | 文字列を整数に変換する
+-- 文字列を整数に変換する補助関数
 readInt :: BS.ByteString -> Int
 readInt = fst . fromJust . BS.readInt
 
@@ -67,11 +67,11 @@ inputSplitStrings lineCount = replicateM lineCount inputSplitString
 inputSplitByteStrings :: Int -> IO [[BS.ByteString]]
 inputSplitByteStrings lineCount = replicateM lineCount inputSplitByteString
 
--- | 空白区切りで出力するための汎用的な関数
+-- 空白区切りで出力する補助関数
 outputSplit :: (a -> String) -> [a] -> IO ()
 outputSplit f = putStrLn . unwords . map f
 
--- | 改行区切りで出力するための汎用的な関数
+-- 改行区切りで出力する補助関数
 outputLine :: (a -> String) -> [a] -> IO ()
 outputLine f = putStr . unlines . map f
 
