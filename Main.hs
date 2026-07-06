@@ -15,6 +15,12 @@ main = do
     s <- inputString
     putStrLn $ show (a + b + c) <> " " <> s
 
+------------------------------------------------------------
+-- * Input
+------------------------------------------------------------
+
+-- ** Single line
+
 -- | 1 行の文字列を受け取る
 inputByteString :: IO BS.ByteString
 inputByteString = BS.getLine
@@ -26,6 +32,8 @@ inputString = getLine
 -- | 1 行の整数を受け取る
 inputInt :: IO Int
 inputInt = readInt <$> inputByteString
+
+-- ** Space separated
 
 -- | 1 行の空白区切りで与えられる文字列を受け取る
 inputSplitByteString :: IO [BS.ByteString]
@@ -39,6 +47,8 @@ inputSplitString = words <$> inputString
 inputSplitInt :: IO [Int]
 inputSplitInt = map readInt <$> inputSplitByteString
 
+-- ** Multiple lines
+
 -- | 複数行の文字列を受け取る
 inputByteStrings :: Int -> IO [BS.ByteString]
 inputByteStrings lineCount = replicateM lineCount inputByteString
@@ -50,6 +60,8 @@ inputStrings lineCount = replicateM lineCount inputString
 -- | 複数行の整数を受け取る
 inputInts :: Int -> IO [Int]
 inputInts lineCount = replicateM lineCount inputInt
+
+-- ** Multiple lines (space separated)
 
 -- | 複数行の空白区切りで与えられる文字列を受け取る
 inputSplitByteStrings :: Int -> IO [[BS.ByteString]]
@@ -63,9 +75,17 @@ inputSplitStrings lineCount = replicateM lineCount inputSplitString
 inputSplitInts :: Int -> IO [[Int]]
 inputSplitInts lineCount = replicateM lineCount inputSplitInt
 
--- 文字列を整数に変換する補助関数
+-- ** Parsing
+
+-- | ByteString を Int に変換する
 readInt :: BS.ByteString -> Int
 readInt = fst . fromJust . BS.readInt
+
+------------------------------------------------------------
+-- * Output
+------------------------------------------------------------
+
+-- ** Space separated
 
 -- | 文字列を空白区切りで出力する
 outputSplitByteString :: [BS.ByteString] -> IO ()
@@ -79,6 +99,8 @@ outputSplitString = outputSplit id
 outputSplitInt :: [Int] -> IO ()
 outputSplitInt = outputSplit show
 
+-- ** Line separated
+
 -- | 文字列を改行区切りで出力する
 outputLineByteString :: [BS.ByteString] -> IO ()
 outputLineByteString = BS.putStr . BS.unlines
@@ -91,13 +113,19 @@ outputLineString = outputLine id
 outputLineInt :: [Int] -> IO ()
 outputLineInt = outputLine show
 
--- 空白区切りで出力する補助関数
+-- ** Generic
+
+-- | 空白区切りで出力する
 outputSplit :: (a -> String) -> [a] -> IO ()
 outputSplit f = putStrLn . unwords . map f
 
--- 改行区切りで出力する補助関数
+-- | 改行区切りで出力する
 outputLine :: (a -> String) -> [a] -> IO ()
 outputLine f = putStr . unlines . map f
+
+------------------------------------------------------------
+-- * Utilities
+------------------------------------------------------------
 
 -- | \( O(1) \) : ブール値を @\"Yes\"@ / @\"No\"@ の形式に変換する
 yn :: Bool -> String
