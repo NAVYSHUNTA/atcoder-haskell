@@ -15,57 +15,81 @@ main = do
     s <- inputString
     putStrLn $ show (a + b + c) <> " " <> s
 
--- 文字列を整数に変換する補助関数
-readInt :: BS.ByteString -> Int
-readInt = fst . fromJust . BS.readInt
-
--- | 1 行の整数を受け取る
-inputInt :: IO Int
-inputInt = readInt <$> inputByteString
+-- | 1 行の文字列を受け取る
+inputByteString :: IO BS.ByteString
+inputByteString = BS.getLine
 
 -- | 1 行の文字列を受け取る
 inputString :: IO String
 inputString = getLine
 
--- | 1 行の文字列を受け取る
-inputByteString :: IO BS.ByteString
-inputByteString = BS.getLine
-
--- | 1 行の空白区切りで与えられる整数を受け取る
-inputSplitInt :: IO [Int]
-inputSplitInt = map readInt <$> inputSplitByteString
-
--- | 1 行の空白区切りで与えられる文字列を受け取る
-inputSplitString :: IO [String]
-inputSplitString = words <$> inputString
+-- | 1 行の整数を受け取る
+inputInt :: IO Int
+inputInt = readInt <$> inputByteString
 
 -- | 1 行の空白区切りで与えられる文字列を受け取る
 inputSplitByteString :: IO [BS.ByteString]
 inputSplitByteString = BS.words <$> inputByteString
 
--- | 複数行の整数を受け取る
-inputInts :: Int -> IO [Int]
-inputInts lineCount = replicateM lineCount inputInt
+-- | 1 行の空白区切りで与えられる文字列を受け取る
+inputSplitString :: IO [String]
+inputSplitString = words <$> inputString
 
--- | 複数行の文字列を受け取る
-inputStrings :: Int -> IO [String]
-inputStrings lineCount = replicateM lineCount inputString
+-- | 1 行の空白区切りで与えられる整数を受け取る
+inputSplitInt :: IO [Int]
+inputSplitInt = map readInt <$> inputSplitByteString
 
 -- | 複数行の文字列を受け取る
 inputByteStrings :: Int -> IO [BS.ByteString]
 inputByteStrings lineCount = replicateM lineCount inputByteString
 
--- | 複数行の空白区切りで与えられる整数を受け取る
-inputSplitInts :: Int -> IO [[Int]]
-inputSplitInts lineCount = replicateM lineCount inputSplitInt
+-- | 複数行の文字列を受け取る
+inputStrings :: Int -> IO [String]
+inputStrings lineCount = replicateM lineCount inputString
+
+-- | 複数行の整数を受け取る
+inputInts :: Int -> IO [Int]
+inputInts lineCount = replicateM lineCount inputInt
+
+-- | 複数行の空白区切りで与えられる文字列を受け取る
+inputSplitByteStrings :: Int -> IO [[BS.ByteString]]
+inputSplitByteStrings lineCount = replicateM lineCount inputSplitByteString
 
 -- | 複数行の空白区切りで与えられる文字列を受け取る
 inputSplitStrings :: Int -> IO [[String]]
 inputSplitStrings lineCount = replicateM lineCount inputSplitString
 
--- | 複数行の空白区切りで与えられる文字列を受け取る
-inputSplitByteStrings :: Int -> IO [[BS.ByteString]]
-inputSplitByteStrings lineCount = replicateM lineCount inputSplitByteString
+-- | 複数行の空白区切りで与えられる整数を受け取る
+inputSplitInts :: Int -> IO [[Int]]
+inputSplitInts lineCount = replicateM lineCount inputSplitInt
+
+-- 文字列を整数に変換する補助関数
+readInt :: BS.ByteString -> Int
+readInt = fst . fromJust . BS.readInt
+
+-- | 文字列を空白区切りで出力する
+outputSplitByteString :: [BS.ByteString] -> IO ()
+outputSplitByteString = BS.putStrLn . BS.unwords
+
+-- | 文字列を空白区切りで出力する
+outputSplitString :: [String] -> IO ()
+outputSplitString = outputSplit id
+
+-- | 整数を空白区切りで出力する
+outputSplitInt :: [Int] -> IO ()
+outputSplitInt = outputSplit show
+
+-- | 文字列を改行区切りで出力する
+outputLineByteString :: [BS.ByteString] -> IO ()
+outputLineByteString = BS.putStr . BS.unlines
+
+-- | 文字列を改行区切りで出力する
+outputLineString :: [String] -> IO ()
+outputLineString = outputLine id
+
+-- | 整数を改行区切りで出力する
+outputLineInt :: [Int] -> IO ()
+outputLineInt = outputLine show
 
 -- 空白区切りで出力する補助関数
 outputSplit :: (a -> String) -> [a] -> IO ()
@@ -74,30 +98,6 @@ outputSplit f = putStrLn . unwords . map f
 -- 改行区切りで出力する補助関数
 outputLine :: (a -> String) -> [a] -> IO ()
 outputLine f = putStr . unlines . map f
-
--- | 整数を空白区切りで出力する
-outputSplitInt :: [Int] -> IO ()
-outputSplitInt = outputSplit show
-
--- | 文字列を空白区切りで出力する
-outputSplitString :: [String] -> IO ()
-outputSplitString = outputSplit id
-
--- | 文字列を空白区切りで出力する
-outputSplitByteString :: [BS.ByteString] -> IO ()
-outputSplitByteString = BS.putStrLn . BS.unwords
-
--- | 整数を改行区切りで出力する
-outputLineInt :: [Int] -> IO ()
-outputLineInt = outputLine show
-
--- | 文字列を改行区切りで出力する
-outputLineString :: [String] -> IO ()
-outputLineString = outputLine id
-
--- | 文字列を改行区切りで出力する
-outputLineByteString :: [BS.ByteString] -> IO ()
-outputLineByteString = BS.putStr . BS.unlines
 
 -- | \( O(1) \) : ブール値を @\"Yes\"@ / @\"No\"@ の形式に変換する
 yn :: Bool -> String
