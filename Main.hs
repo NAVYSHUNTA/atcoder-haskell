@@ -39,13 +39,49 @@ inputInt = readInt <$> inputByteString
 inputSplitByteString :: IO [BS.ByteString]
 inputSplitByteString = BS.words <$> inputByteString
 
+-- | 1 行の空白区切りで与えられる 2 個の文字列を受け取る
+inputByteString2 :: IO (BS.ByteString, BS.ByteString)
+inputByteString2 = toTuple2 <$> inputSplitByteString
+
+-- | 1 行の空白区切りで与えられる 3 個の文字列を受け取る
+inputByteString3 :: IO (BS.ByteString, BS.ByteString, BS.ByteString)
+inputByteString3 = toTuple3 <$> inputSplitByteString
+
+-- | 1 行の空白区切りで与えられる 4 個の文字列を受け取る
+inputByteString4 :: IO (BS.ByteString, BS.ByteString, BS.ByteString, BS.ByteString)
+inputByteString4 = toTuple4 <$> inputSplitByteString
+
 -- | 1 行の空白区切りで与えられる文字列を受け取る
 inputSplitString :: IO [String]
 inputSplitString = words <$> inputString
 
+-- | 1 行の空白区切りで与えられる 2 個の文字列を受け取る
+inputString2 :: IO (String, String)
+inputString2 = toTuple2 <$> inputSplitString
+
+-- | 1 行の空白区切りで与えられる 3 個の文字列を受け取る
+inputString3 :: IO (String, String, String)
+inputString3 = toTuple3 <$> inputSplitString
+
+-- | 1 行の空白区切りで与えられる 4 個の文字列を受け取る
+inputString4 :: IO (String, String, String, String)
+inputString4 = toTuple4 <$> inputSplitString
+
 -- | 1 行の空白区切りで与えられる整数を受け取る
 inputSplitInt :: IO [Int]
 inputSplitInt = map readInt <$> inputSplitByteString
+
+-- | 1 行の空白区切りで与えられる 2 個の整数を受け取る
+inputInt2 :: IO (Int, Int)
+inputInt2 = toTuple2 <$> inputSplitInt
+
+-- | 1 行の空白区切りで与えられる 3 個の整数を受け取る
+inputInt3 :: IO (Int, Int, Int)
+inputInt3 = toTuple3 <$> inputSplitInt
+
+-- | 1 行の空白区切りで与えられる 4 個の整数を受け取る
+inputInt4 :: IO (Int, Int, Int, Int)
+inputInt4 = toTuple4 <$> inputSplitInt
 
 -- ** Multiple lines
 
@@ -74,6 +110,20 @@ inputSplitStrings lineCount = replicateM lineCount inputSplitString
 -- | 複数行の空白区切りで与えられる整数を受け取る
 inputSplitInts :: Int -> IO [[Int]]
 inputSplitInts lineCount = replicateM lineCount inputSplitInt
+
+-- ** Helpers
+
+-- | 長さ 2 のリストを 2 要素のタプルに変換する
+toTuple2 :: [a] -> (a, a)
+toTuple2 [a, b] = (a, b)
+
+-- | 長さ 3 のリストを 3 要素のタプルに変換する
+toTuple3 :: [a] -> (a, a, a)
+toTuple3 [a, b, c] = (a, b, c)
+
+-- | 長さ 4 のリストを 4 要素のタプルに変換する
+toTuple4 :: [a] -> (a, a, a, a)
+toTuple4 [a, b, c, d] = (a, b, c, d)
 
 -- ** Parsing
 
