@@ -177,13 +177,23 @@ outputLine f = putStr . unlines . map f
 -- * Utilities
 ------------------------------------------------------------
 
--- | \( O(1) \) : ブール値を @\"Yes\"@ / @\"No\"@ の形式に変換する
-yn :: Bool -> String
-yn = bool "No" "Yes"
+-- | True の場合に選択される文字列
+type TrueResult = String
+
+-- | False の場合に選択される文字列
+type FalseResult = String
+
+-- | \( O(1) \) : ブール値が True なら第 2 引数、False なら第 3 引数を返す
+choose :: Bool -> a -> a -> a
+choose p trueResult falseResult = bool falseResult trueResult p
+
+-- | \( O(1) \) : ブール値が True なら第 2 引数、False なら第 3 引数の文字列を出力する
+printChoose :: Bool -> TrueResult -> FalseResult -> IO ()
+printChoose p trueResult falseResult = putStrLn $ choose p trueResult falseResult
 
 -- | \( O(1) \) : ブール値を @\"Yes\"@ / @\"No\"@ の形式で出力する
 printYesNo :: Bool -> IO ()
-printYesNo = putStrLn . yn
+printYesNo p = printChoose p "Yes" "No"
 
 -- | \( O(n) \) : 条件を満たす要素の個数を数える
 countBy :: (Foldable t) => (a -> Bool) -> t a -> Int
