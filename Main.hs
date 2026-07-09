@@ -11,7 +11,7 @@ import qualified Data.ByteString.Char8 as BS
 main :: IO ()
 main = do
     a <- inputInt
-    [b, c] <- inputSplitInt
+    (b, c) <- inputInt2
     s <- inputString
     putStrLn $ show (a + b + c) <> " " <> s
 
@@ -186,5 +186,5 @@ printYesNo :: Bool -> IO ()
 printYesNo = putStrLn . yn
 
 -- | \( O(n) \) : 条件を満たす要素の個数を数える
-count :: (Foldable t) => (a -> Bool) -> t a -> Int
-count p = foldr (\x cnt -> if p x then cnt + 1 else cnt) 0
+countBy :: (Foldable t) => (a -> Bool) -> t a -> Int
+countBy p = foldr (\x cnt -> if p x then cnt + 1 else cnt) 0
