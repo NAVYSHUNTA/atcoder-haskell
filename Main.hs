@@ -33,6 +33,10 @@ inputString = getLine
 inputInt :: IO Int
 inputInt = readInt <$> inputByteString
 
+-- | 1 行の整数を受け取る
+inputInteger :: IO Integer
+inputInteger = readInteger <$> inputByteString
+
 -- ** Space separated
 
 -- | 1 行の空白区切りで与えられる文字列を受け取る
@@ -83,6 +87,22 @@ inputInt3 = toTuple3 <$> inputSplitInt
 inputInt4 :: IO (Int, Int, Int, Int)
 inputInt4 = toTuple4 <$> inputSplitInt
 
+-- | 1 行の空白区切りで与えられる整数を受け取る
+inputSplitInteger :: IO [Integer]
+inputSplitInteger = map readInteger <$> inputSplitByteString
+
+-- | 1 行の空白区切りで与えられる 2 個の整数を受け取る
+inputInteger2 :: IO (Integer, Integer)
+inputInteger2 = toTuple2 <$> inputSplitInteger
+
+-- | 1 行の空白区切りで与えられる 3 個の整数を受け取る
+inputInteger3 :: IO (Integer, Integer, Integer)
+inputInteger3 = toTuple3 <$> inputSplitInteger
+
+-- | 1 行の空白区切りで与えられる 4 個の整数を受け取る
+inputInteger4 :: IO (Integer, Integer, Integer, Integer)
+inputInteger4 = toTuple4 <$> inputSplitInteger
+
 -- ** Multiple lines
 
 -- | 複数行の文字列を受け取る
@@ -131,6 +151,10 @@ toTuple4 [a, b, c, d] = (a, b, c, d)
 readInt :: BS.ByteString -> Int
 readInt = fst . fromJust . BS.readInt
 
+-- | ByteString を Integer に変換する
+readInteger :: BS.ByteString -> Integer
+readInteger = fst . fromJust . BS.readInteger
+
 ------------------------------------------------------------
 -- * Output
 ------------------------------------------------------------
@@ -149,6 +173,10 @@ outputSplitString = outputSplit id
 outputSplitInt :: [Int] -> IO ()
 outputSplitInt = outputSplit show
 
+-- | 整数を空白区切りで出力する
+outputSplitInteger :: [Integer] -> IO ()
+outputSplitInteger = outputSplit show
+
 -- ** Line separated
 
 -- | 文字列を改行区切りで出力する
@@ -162,6 +190,10 @@ outputLineString = outputLine id
 -- | 整数を改行区切りで出力する
 outputLineInt :: [Int] -> IO ()
 outputLineInt = outputLine show
+
+-- | 整数を改行区切りで出力する
+outputLineInteger :: [Integer] -> IO ()
+outputLineInteger = outputLine show
 
 -- ** Generic
 
