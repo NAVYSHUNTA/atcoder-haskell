@@ -136,14 +136,17 @@ inputSplitInts lineCount = replicateM lineCount inputSplitInt
 -- | 長さ 2 のリストを 2 要素のタプルに変換する
 toTuple2 :: [a] -> (a, a)
 toTuple2 [a, b] = (a, b)
+toTuple2 _ = error "toTuple2: expected exactly 2 elements"
 
 -- | 長さ 3 のリストを 3 要素のタプルに変換する
 toTuple3 :: [a] -> (a, a, a)
 toTuple3 [a, b, c] = (a, b, c)
+toTuple3 _ = error "toTuple3: expected exactly 3 elements"
 
 -- | 長さ 4 のリストを 4 要素のタプルに変換する
 toTuple4 :: [a] -> (a, a, a, a)
 toTuple4 [a, b, c, d] = (a, b, c, d)
+toTuple4 _ = error "toTuple4: expected exactly 4 elements"
 
 -- ** Parsing
 
