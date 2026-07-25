@@ -212,6 +212,26 @@ outputLine f = putStr . unlines . map f
 -- * Utilities
 ------------------------------------------------------------
 
+-- ** Grid
+
+-- | 4 方向
+dirs4 :: [(Int, Int)]
+dirs4 =
+    [           ( 1, 0)
+    , ( 0, -1),          ( 0, 1)
+    ,           (-1, 0)
+    ]
+
+-- | 8 方向
+dirs8 :: [(Int, Int)]
+dirs8 =
+    [ ( 1, -1), ( 1, 0), ( 1, 1)
+    , ( 0, -1),          ( 0, 1)
+    , (-1, -1), (-1, 0), (-1, 1)
+    ]
+
+-- ** Boolean
+
 -- | True の場合に選択される文字列
 type TrueResult = String
 
@@ -229,6 +249,8 @@ printChoose p trueResult falseResult = putStrLn $ choose p trueResult falseResul
 -- | \( O(1) \) : ブール値を @\"Yes\"@ / @\"No\"@ の形式で出力する
 printYesNo :: Bool -> IO ()
 printYesNo p = printChoose p "Yes" "No"
+
+-- ** List
 
 -- | \( O(n) \) : 条件を満たす要素の個数を数える
 countBy :: (Foldable t) => (a -> Bool) -> t a -> Int
