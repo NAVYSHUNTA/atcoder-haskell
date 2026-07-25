@@ -212,6 +212,12 @@ outputLine f = putStr . unlines . map f
 -- * Utilities
 ------------------------------------------------------------
 
+-- ** List
+
+-- | \( O(n) \) : 条件を満たす要素の個数を数える
+countBy :: (Foldable t) => (a -> Bool) -> t a -> Int
+countBy p = foldr (\x cnt -> if p x then cnt + 1 else cnt) 0
+
 -- ** Grid
 
 -- | 4 方向
@@ -249,9 +255,3 @@ printChoose p trueResult falseResult = putStrLn $ choose p trueResult falseResul
 -- | \( O(1) \) : ブール値を @\"Yes\"@ / @\"No\"@ の形式で出力する
 printYesNo :: Bool -> IO ()
 printYesNo p = printChoose p "Yes" "No"
-
--- ** List
-
--- | \( O(n) \) : 条件を満たす要素の個数を数える
-countBy :: (Foldable t) => (a -> Bool) -> t a -> Int
-countBy p = foldr (\x cnt -> if p x then cnt + 1 else cnt) 0
