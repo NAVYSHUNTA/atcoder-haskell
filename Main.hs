@@ -218,6 +218,10 @@ outputLine f = putStr . unlines . map f
 countBy :: (Foldable t) => (a -> Bool) -> t a -> Int
 countBy p = foldr (\x cnt -> if p x then cnt + 1 else cnt) 0
 
+-- | \( O(n) \) : リストを指定した開始値からの添字付きリストに変換する
+withIndex :: Int -> [a] -> [(Int, a)]
+withIndex n = zip [n..]
+
 -- ** Grid
 
 -- | 4 方向
